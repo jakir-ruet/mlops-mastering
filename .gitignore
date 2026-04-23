@@ -2,4 +2,5 @@
 /.idea
 /.ansible
 /.venv
+/venv
 /.DS_Store
