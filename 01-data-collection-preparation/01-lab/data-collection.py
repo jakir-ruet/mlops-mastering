@@ -42,4 +42,4 @@ df.loc[np.random.choice(df.index, size=int(num_records * 0.05), replace=False), 
 df.loc[np.random.choice(df.index, size=int(num_records * 0.1), replace=False), "salary"] = np.nan
 
 # Save to CSV
-df.to_csv("mock_data.csv", index=False)
+df.to_csv("data-collection.csv", index=False)
