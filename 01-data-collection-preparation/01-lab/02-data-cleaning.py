@@ -8,19 +8,11 @@ df = df.drop_duplicates()
 
 # 2. Handle missing values
 
-# Age → fill with median
 df['age'] = df['age'].fillna(df['age'].median())
-
-# Salary → fill with mean
 df['salary'] = df['salary'].fillna(df['salary'].mean())
-
-# Department → fill with mode
 df['department'] = df['department'].fillna(df['department'].mode()[0])
-
-# Bonus → fill with 0 (logical assumption)
 df['bonus'] = df['bonus'].fillna(0)
 
-# Hire date → convert to datetime + fill missing
 df['hire_date'] = pd.to_datetime(df['hire_date'], errors='coerce')
 df['hire_date'] = df['hire_date'].fillna(pd.Timestamp("2000-01-01"))
 
@@ -30,7 +22,11 @@ def parse_profile(x):
         return pd.Series([None, None, None])
     try:
         p = json.loads(x)
-        return pd.Series([p.get("address"), p.get("phone"), p.get("email")])
+        return pd.Series([
+            p.get("address"),
+            p.get("phone"),
+            p.get("email")
+        ])
     except:
         return pd.Series([None, None, None])
 
@@ -39,9 +35,26 @@ df[['address', 'phone', 'email']] = df['profile'].apply(parse_profile)
 # Drop original profile column
 df = df.drop(columns=['profile'])
 
-# 4. Fix data types
+# 4. Feature Engineering
+
+# Address length
+df['address_length'] = df['address'].apply(lambda x: len(str(x)) if pd.notnull(x) else 0)
+
+# Salary category (Low, Medium, High)
+bins = [0, 50000, 70000, float("inf")]
+labels = ['Low', 'Medium', 'High']
+
+df['salary_category'] = pd.cut(
+    df['salary'],
+    bins=bins,
+    labels=labels
+)
+
+# 5. Fix data types
 df['age'] = df['age'].astype(int)
 df['salary'] = df['salary'].astype(float)
 
-# Save cleaned data
+# 6. Save cleaned + engineered data
 df.to_csv("clean-data.csv", index=False)
+
+print("✅ Data cleaning + feature engineering completed!")
