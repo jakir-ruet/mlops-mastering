@@ -4,3 +4,5 @@
 /.venv
 /venv
 /.DS_Store
+
+/01-data-collection-preparation/01-lab/.ipynb_checkpoints
