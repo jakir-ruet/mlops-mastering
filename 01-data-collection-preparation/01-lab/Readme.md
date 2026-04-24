@@ -7,8 +7,20 @@ pip install pandas numpy scikit-learn
 python -c "import numpy, pandas, sklearn; print('OK')"
 ```
 
-### Mock data generate
+### Data collection by `generating mock data`
 
 ```bash
-python mockdata.py
+python 01-data-collection.py
+```
+
+### Data clearing
+
+```bash
+python 02-data-cleaning.py
+```
+
+### Data transformation
+
+```bash
+python 03-data-transformation.py
 ```
